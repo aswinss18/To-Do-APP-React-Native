@@ -11,6 +11,7 @@ import {
 
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -41,41 +42,51 @@ export default function App() {
     setIsModalVisible(false);
   }
   return (
-    <View style={styles.appContainer}>
-      <Button
-        title="Add New Goal"
-        color="#5e0acc"
-        onPress={startAddGoalHandler}
-      />
-
-      <GoalInput
-        visible={isModalVisible}
-        enteredGoalText={enteredGoalText}
-        addGoalHandler={addGoalHandler}
-        endAddGoalHandler={endAddGoalHandler}
-        goalInputHandler={goalInputHandler}
-      />
-
-      <View style={styles.goalsContainer}>
-        <FlatList
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-          data={courseGoals}
-          renderItem={(itemData) => {
-            return (
-              <GoalItem itemData={itemData} onDeleteItem={deleteGoalHandler} />
-            );
-          }}
-          alwaysBounceVertical={false}
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add New Goal"
+          color="#a065ec"
+          onPress={startAddGoalHandler}
         />
+
+        <GoalInput
+          visible={isModalVisible}
+          enteredGoalText={enteredGoalText}
+          addGoalHandler={addGoalHandler}
+          endAddGoalHandler={endAddGoalHandler}
+          goalInputHandler={goalInputHandler}
+        />
+
+        <View style={styles.goalsContainer}>
+          <FlatList
+            keyExtractor={(item, index) => {
+              return item.id;
+            }}
+            data={courseGoals}
+            renderItem={(itemData) => {
+              return (
+                <GoalItem
+                  itemData={itemData}
+                  onDeleteItem={deleteGoalHandler}
+                />
+              );
+            }}
+            alwaysBounceVertical={false}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  appContainer: { flex: 1, paddingTop: 50, paddingHorizontal: 16 },
+  appContainer: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 16,
+  },
 
   goalsContainer: { flex: 5 },
 });

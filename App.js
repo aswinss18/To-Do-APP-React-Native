@@ -13,6 +13,7 @@ import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
 
 export default function App() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [enteredGoalText, setEnteredGoalText] = useState("");
   const [courseGoals, setCourseGoals] = useState([]);
 
@@ -25,6 +26,7 @@ export default function App() {
       { text: enteredGoalText, id: Math.random().toString() },
     ]);
     setEnteredGoalText("");
+    endAddGoalHandler();
   }
 
   function deleteGoalHandler(id) {
@@ -32,13 +34,28 @@ export default function App() {
       return currentGoals.filter((goal) => goal.id !== id);
     });
   }
+  function startAddGoalHandler() {
+    setIsModalVisible(true);
+  }
+  function endAddGoalHandler() {
+    setIsModalVisible(false);
+  }
   return (
     <View style={styles.appContainer}>
+      <Button
+        title="Add New Goal"
+        color="#5e0acc"
+        onPress={startAddGoalHandler}
+      />
+
       <GoalInput
+        visible={isModalVisible}
         enteredGoalText={enteredGoalText}
         addGoalHandler={addGoalHandler}
+        endAddGoalHandler={endAddGoalHandler}
         goalInputHandler={goalInputHandler}
       />
+
       <View style={styles.goalsContainer}>
         <FlatList
           keyExtractor={(item, index) => {
